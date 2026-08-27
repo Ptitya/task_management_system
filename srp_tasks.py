@@ -62,7 +62,7 @@ class Task:
 
 class TaskManager:
 
-  def __init__(self, storage: TaskStorage):
+  def __init__(self, storage: TaskStorage): # รับ storage object เข้ามา
     self.storage = storage
     self.tasks = self.storage.load_tasks()
     self.next_id = (
@@ -89,15 +89,17 @@ class TaskManager:
     task = Task(self.next_id, description, due_date)
     self.tasks.append(task)
     self.next_id += 1
-    self.storage.save_tasks(self.tasks)
+    self.storage.save_tasks(self.tasks) # Save after adding
     print(f"Task '{description}' added.")
     return task
+
+# ... (list_tasks, get_tasks_by_id, mark_task_completed methods เหมือนเดิม) ...
 
   def mark_task_completed(self, task_id):
     task = self.get_task_by_id(task_id)
     if task:
       task.mark_completed()
-      self.storage.save_tasks(self.tasks)
+      self.storage.save_tasks(self.tasks) # Save after marking
       return True
     print(f"Task {task_id} not found.")
     return False
@@ -105,7 +107,7 @@ class TaskManager:
 
 if __name__ == "__main__":
   file_storage = FileTaskStorage("my_tasks.txt")
-  manager = TaskManager(file_storage)
+  manager = TaskManager(file_storage) # ส่ง FileTaskStorage เข้าเป็นอาร์กิวเมนต์
 
   manager.list_tasks()
   manager.add_task("Review SOLID Principles", "2024-08-10")
